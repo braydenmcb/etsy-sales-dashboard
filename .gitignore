@@ -172,3 +172,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+#.csv for testing
+test-data/
+
+#test file for checking that code works
+test.py
