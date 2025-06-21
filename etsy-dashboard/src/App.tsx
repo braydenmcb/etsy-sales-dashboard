@@ -1,32 +1,38 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect } from 'react'
+//import React from 'react'
 import './App.css'
+import axios from 'axios'
+import FormInput from './FormInput'
+import logo from './assets/dashboard-logo.png'
 
+// IMPORTS VIA NPM INSTALL: axios, csv=parse, bootstrap@5.3.7
 function App() {
-  const [count, setCount] = useState(0)
+
+  const fetchData = async () => {
+    const response = await axios.get("http://127.0.0.1:8888/api/sales");
+    console.log(response.data);
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
       <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <img src={logo} className="logo" alt="Etsy Logo" />
       </div>
-      <h1>Vite + React</h1>
+      <h1>Etsy Sales Analysis Dashboard</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
+        <h3>Upload your etsy sales spreadsheets (.csv), and see a visualization of your sales data!</h3>
         <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
+          NOTE: The uploaded files are not stored in any way, no private data (customer names, addresses, etc.) is stored. 
         </p>
       </div>
+      <div>
+        <FormInput />
+      </div>
       <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        Created with React and Vite.
       </p>
     </>
   )
