@@ -2,10 +2,12 @@ import { useEffect } from 'react'
 //import React from 'react'
 import './App.css'
 import axios from 'axios'
+
 import FormInput from './FormInput'
+
 import logo from './assets/dashboard-logo.png'
 
-// IMPORTS VIA NPM INSTALL: axios, csv=parse, bootstrap@5.3.7
+// IMPORTS VIA NPM INSTALL: axios, papaparse, bootstrap@5.3.7
 function App() {
 
   const fetchData = async () => {
