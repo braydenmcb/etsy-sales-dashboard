@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import './App.css'
 import axios from 'axios'
 
-import FormInput from './FormInput'
+import FormInput from './components/FormInput'
 
 import logo from './assets/dashboard-logo.png'
 

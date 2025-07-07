@@ -1,9 +1,13 @@
 import Form from 'react-bootstrap/Form';
 
-import { validateCsvFile } from './validators/validateCsvFile.tsx'
+import { validateCsvFile } from '../validators/validateCsvFile.tsx'
+import  { fetchCsvData }  from '../hooks/fetchCsvData.tsx'
+
+
 // This component allows users to upload CSV files for analysis
 // It uses react-bootstrap for styling and react-dropzone for file handling
-// NOTE: might want to ad a file verification step to ensure the uploaded files are valid CSVs (might make a separate component for that)
+
+
 const FormInput: React.FC = () => {
     const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files;
@@ -27,6 +31,10 @@ const FormInput: React.FC = () => {
         }
 
         console.log("Valid CSV files:", validFiles.map(f=> f.name));
+
+        for (var file in validFiles) {
+            fetchCsvData(file);
+        }
     };
 
     return (
