@@ -1,7 +1,11 @@
+import React, { useState } from 'react';
 import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 
 import { validateCsvFile } from '../validators/validateCsvFile.tsx'
 import  { fetchCsvData }  from '../hooks/fetchCsvData.tsx'
+
+
 
 
 // This component allows users to upload CSV files for analysis
@@ -9,14 +13,21 @@ import  { fetchCsvData }  from '../hooks/fetchCsvData.tsx'
 
 
 const FormInput: React.FC = () => {
-    const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const files = e.target.files;
-        if (!files || files.length === 0 ) return;
+    const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return;
+        setSelectedFiles(Array.from(e.target.files));
+    };
+
+    const handleSubmit = () => {
         const validFiles: File[] = [];
         const errors: string[] = [];
 
-        Array.from(files).forEach((file) => {
+        if (selectedFiles.length === 0) {
+            alert("No Files are submitted!")
+        }
+        selectedFiles.forEach((file) => {
             const {valid, error} = validateCsvFile(file);
             if (valid) {
                 validFiles.push(file);
@@ -32,9 +43,9 @@ const FormInput: React.FC = () => {
 
         console.log("Valid CSV files:", validFiles.map(f=> f.name));
 
-        for (var file in validFiles) {
+        validFiles.forEach((file) => {
             fetchCsvData(file);
-        }
+        });
     };
 
     return (
@@ -42,7 +53,12 @@ const FormInput: React.FC = () => {
             <Form>
                 <Form.Group controlId="formFileMultiple" className="mb-3">
                     <Form.Label>Upload your CSV file(s)</Form.Label>
-                    <Form.Control type="file" multiple accept=".csv" onChange={handleFilesChange}/>
+                    <br></br>
+                    <Form.Control type="file" multiple accept=".csv" onChange={handleFileChange}/>
+                    <Button onClick={handleSubmit}>
+                        Submit
+                    </Button>
+                    <p>*Either drag over a group of files, or Ctrl/Cmd/Shift + click to select your files.</p>
                 </Form.Group>
             </Form>
         </>

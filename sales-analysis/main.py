@@ -24,8 +24,10 @@ def submit_files():
     if request.method == "OPTIONS":
         return '', 200
     try:
-        data = request.get_json()
-        print(data)
+        print("Headers:", request.headers)
+        print("Raw data:", request.data)
+        data = request.get_json(force=True) #for debugging only
+        print("parsed JSON:", data)
         return jsonify({
             'status': 'recieved',
             'recieved': data

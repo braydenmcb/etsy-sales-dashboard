@@ -1,4 +1,4 @@
-export const sendDatatoBackend = async (payload: any, type: string) => {
+export const sendDatatoBackend = async (payload: any) => {
     const response = await fetch('http://127.0.0.1:8888/api/submitted-files/', {
         method: 'POST',
         headers: {
