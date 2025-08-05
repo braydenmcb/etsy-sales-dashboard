@@ -43,9 +43,7 @@ const FormInput: React.FC = () => {
 
         console.log("Valid CSV files:", validFiles.map(f=> f.name));
 
-        validFiles.forEach((file) => {
-            fetchCsvData(file);
-        });
+        fetchCsvData(validFiles)
     };
 
     return (

@@ -179,3 +179,6 @@ test-data/
 
 #test file for checking that code works
 test.py
+
+#text file for extra notes
+notes.txt
