@@ -2,15 +2,15 @@ import { sendDataToBackend } from "../api/sendData";
 import { parseSoldOrders, parseSoldOrderItems } from "../api/parsers"
 
 type ParsedFiles = {
-    orders: any[] | null;
-    items: any[] | null;
+    orders: any[];
+    items: any[];
 };
 
 export function fetchCsvData(files: File[]): void {
     console.log("fetching data")
     const parsed: ParsedFiles = {
-        orders: null,
-        items: null,
+        orders: [],
+        items: [],
     };
 
     let filesParsed = 0;
@@ -22,15 +22,32 @@ export function fetchCsvData(files: File[]): void {
             const text = reader.result as string;
             
             if (file.name.includes("EtsySoldOrders")) {
-                parsed.orders = await parseSoldOrders(text);
+                const year = file.name.match(/\d{4}/)?.[0] || "";
+                const orders = await parseSoldOrders(text);
+
+                parsed.orders.push(
+                    ...orders.map(order => ({
+                        ...order,
+                        orderId: year ? `${year}-${order.orderId}` : order.orderId
+                    }))
+                );
+
             } else if (file.name.includes("EtsySoldOrderItems")) {
-                parsed.items = await parseSoldOrderItems(text);
+                const year = file.name.match(/\d{4}/)?.[0] || "";
+                const items = await parseSoldOrderItems(text);
+                
+                parsed.items.push(
+                    ...items.map(item => ({
+                        ...item,
+                        orderId: year ? `${year}-${item.orderId}` : item.orderId
+                    }))
+                );
             }
 
             filesParsed++;
             if(filesParsed === files.length && parsed.orders && parsed.items) {
                 const merged = mergeOrdersAndItems(parsed.orders, parsed.items);
-                sendDataToBackend({filename: "MergedOrders.csv", content: merged});
+                sendDataToBackend({filename: "MergedOrderItems.csv", content: merged});
             }
         };
         reader.readAsText(file);
@@ -38,6 +55,8 @@ export function fetchCsvData(files: File[]): void {
 }
 
 function mergeOrdersAndItems(orders: any[], items: any[]) {
+    // NOTE: there are no duplicate rows as some orders could be 
+    //       personaliszed differently, making them different order items
     const merged = [];
 
     for (const order of orders) {
