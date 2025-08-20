@@ -1,8 +1,9 @@
-# pip install flask flask-cors
+# pip install flask flask-cors numpy pandas
 
 '''
 TODO:
-need to now finally analyze the data and send back to frontend to make it look pretty 
+need to now finally analyze the data and send back to frontend to make it look pretty
+geographical sales is done, need to send to the main.py and then to the frontend to be visualized
 '''
 from flask import Flask, request, jsonify
 from flask_cors import CORS

@@ -30,7 +30,7 @@ export function parseSoldOrderItems(csvText: string): Promise<any[]> {
             complete: (results) => {
                 const parsed = results.data.map((row: any) => ({
                     orderId: row["Order ID"],
-                    itemName: row["item Name"],
+                    itemName: row["Item Name"],
                     sku: row["SKU"],
                     quantity: parseInt(row["Quantity"] || "0"),
                     price: parseFloat(row["Price"] || "0"),
