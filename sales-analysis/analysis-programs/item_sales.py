@@ -32,10 +32,11 @@ def aggregate_sales(df, period="yearly"):
     result["itemTotal"] = result["itemTotal"].round(2)
 
     result_json = result.to_dict(orient="records")
+    # print(result)
     return result_json
 
 
-def main(csv_path="../uploads/MergedOrderItems.csv"):
+def item_sales_analysis(csv_path="../uploads/MergedOrderItems.csv"):
     """
     creates a pandas DataFrame of the csv file, then adds needed time columns.
     Then calls aggregate_sales() to aggregate the data and then forms final JSON to
@@ -56,10 +57,13 @@ def main(csv_path="../uploads/MergedOrderItems.csv"):
         "weekly_items": weekly_json
     }
 
-    # return final_json
-    print(final_json)
+    return final_json
 
 
+def main(csv_path="../uploads/MergedOrderItems.csv"):
+    """CLI entrypoint for testing"""
+    final_json = item_sales_analysis(csv_path)
+    # print(final_json)
 
 if __name__ == "__main__":
     main("../uploads/MergedOrderItems.csv")
