@@ -3,6 +3,7 @@ import numpy as np
 
 
 '''
+TODO: see if you can change the format of the json so its not too long (have it nested or soemthing")
 This program analyzes sales of specific items sold by the Etsy store,
 and sorts them based on time periods.
 '''
@@ -36,7 +37,7 @@ def aggregate_sales(df, period="yearly"):
     return result_json
 
 
-def item_sales_analysis(csv_path="../uploads/MergedOrderItems.csv"):
+def analyze(csv_path="../uploads/MergedOrderItems.csv"):
     """
     creates a pandas DataFrame of the csv file, then adds needed time columns.
     Then calls aggregate_sales() to aggregate the data and then forms final JSON to
@@ -62,7 +63,7 @@ def item_sales_analysis(csv_path="../uploads/MergedOrderItems.csv"):
 
 def main(csv_path="../uploads/MergedOrderItems.csv"):
     """CLI entrypoint for testing"""
-    final_json = item_sales_analysis(csv_path)
+    final_json = analyze(csv_path)
     # print(final_json)
 
 if __name__ == "__main__":

@@ -2,12 +2,13 @@
 
 '''
 TODO:
-need to now finally analyze the data and send back to frontend to make it look pretty
-geographical sales is done, need to send to the main.py and then to the frontend to be visualized
+maybe add a file reupload later, now just focus on frontend data visualization
 '''
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
+
+from analysis_programs import geographical_sales, item_sales, period_sales
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
@@ -15,7 +16,7 @@ cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-@app.route("/api/sales", methods=["GET", "POST"])
+@app.route("/api/sales", methods=["POST"])
 def upload_data():
     if "file" not in request.files:
         return jsonify({"error": "No file part"}), 200
@@ -27,7 +28,20 @@ def upload_data():
     filepath = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(filepath)
 
-    return jsonify({"message": "File uplaoded successfully", "filename": file.filename})
+    geo_data = geographical_sales.analyze(filepath)
+    item_data = item_sales.analyze(filepath)
+    period_data = period_sales.analyze(filepath)
+
+    return jsonify({
+        "message": "File analyzed successfully",
+        "filename": file.filename,
+        "results": {
+            "geographical_sales": geo_data,
+            "item_sales": item_data,
+            "period_sales": period_data
+        }
+    })
+
 
 if __name__ == "__main__":
     app.run(debug=True, port=8888)

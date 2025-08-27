@@ -27,7 +27,7 @@ def group_by_country(df, field_tracking):
     return result
 
 
-def geographical_analysis(csv_path="../uploads/MergedOrderItems.csv"):
+def analyze(csv_path="../uploads/MergedOrderItems.csv"):
     """ builds the dataframes, calls the helper function to make the JSON
         and returns the final JSON for the completed geo analysis """
     
@@ -58,7 +58,7 @@ def geographical_analysis(csv_path="../uploads/MergedOrderItems.csv"):
 
 def main(csv_path="../uploads/MergedOrderItems.csv"):
     """CLI entrypoint for testing"""
-    final_json = geographical_analysis(csv_path)
+    final_json = analyze(csv_path)
     print(final_json)
 
 
