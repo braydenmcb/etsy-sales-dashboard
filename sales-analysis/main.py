@@ -7,14 +7,20 @@ maybe add a file reupload later, now just focus on frontend data visualization
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import os
-
+import json
 from analysis_programs import geographical_sales, item_sales, period_sales
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:5173"}})
 
+SAVE_PATH = "./uploads/aggregated_data.json"
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+def save_aggregated_data(data):
+    with open(SAVE_PATH, "w") as f:
+        json.dump(data, f)
+
 
 @app.route("/api/sales", methods=["POST"])
 def upload_data():
@@ -32,7 +38,7 @@ def upload_data():
     item_data = item_sales.analyze(filepath)
     period_data = period_sales.analyze(filepath)
 
-    return jsonify({
+    final_json = {
         "message": "File analyzed successfully",
         "filename": file.filename,
         "results": {
@@ -40,7 +46,9 @@ def upload_data():
             "item_sales": item_data,
             "period_sales": period_data
         }
-    })
+    }
+    save_aggregated_data(final_json)
+    return jsonify(final_json)
 
 
 if __name__ == "__main__":

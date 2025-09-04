@@ -32,7 +32,7 @@ def analyze(csv_path="../uploads/MergedOrderItems.csv"):
         and returns the final JSON for the completed geo analysis """
     
     df = pd.read_csv(csv_path)
-    
+    df["shipCity"] = df["shipCity"].str.strip().str.lower().str.replace(r"[^\w\s]", "", regex=True)
     order_items = (
         df.groupby(["shipCountry", "shipState", "shipCity"])
         .size()
