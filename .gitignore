@@ -174,15 +174,15 @@ cython_debug/
 .pypirc
 
 # folder for uploaded files
-sales-analysis/uploads/
+backend/uploads/
 
 #.csv for testing
 test-data/
 
-#test file for checking that code works
-test.py
 
-#text file for extra notes
-notes.txt
-
+# mac build files
 .DS_Store
+
+# files made after parsing data
+aggregated_data.json
+MergedOrderItems.csv
